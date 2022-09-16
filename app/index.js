@@ -1,4 +1,16 @@
 require('dotenv').config()
-const receiveMessage = require('./receive-message')
+const { receiveMessage, stopReceive } = require('./receive-message')
 
-receiveMessage()
+process.on('SIGTERM', async () => {
+  await stopReceive()
+  process.exit(0)
+})
+
+process.on('SIGINT', async () => {
+  await stopReceive()
+  process.exit(0)
+})
+
+module.exports = (async () => {
+  receiveMessage()
+})()

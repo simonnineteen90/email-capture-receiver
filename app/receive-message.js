@@ -1,14 +1,14 @@
-const { delay, ServiceBusClient } = require('@azure/service-bus')
+const { ServiceBusClient } = require('@azure/service-bus')
 
 const connectionString = process.env.CONNECTION_STRING
-const queueName = process.env.QUEUE_NAME
+const topicName = process.env.TOPIC_NAME
+const subscriptionName = process.env.SUBSCRIPTION_NAME
+const sbClient = new ServiceBusClient(connectionString)
+const receiver = sbClient.createReceiver(topicName, subscriptionName)
 
 const receiveMessage = async () => {
-  const sbClient = new ServiceBusClient(connectionString)
-  const receiver = sbClient.createReceiver(queueName)
-
   const myMessageHandler = async (messageReceived) => {
-    console.log(`New passport application received for: ${messageReceived.body.name}`)
+    console.log(`New email subscriber: ${messageReceived.body.firstName} ${messageReceived.body.lastName}`)
   }
 
   const myErrorHandler = async (error) => {
@@ -19,11 +19,11 @@ const receiveMessage = async () => {
     processMessage: myMessageHandler,
     processError: myErrorHandler
   })
-
-  // await delay(10000)
-
-  // await receiver.close()
-  // await sbClient.close()
 }
 
-module.exports = receiveMessage
+const stopReceive = async () => {
+  await receiver.close()
+  await sbClient.close()
+}
+
+module.exports = { receiveMessage, stopReceive }
