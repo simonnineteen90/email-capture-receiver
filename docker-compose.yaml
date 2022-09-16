@@ -6,7 +6,10 @@ services:
     container_name: email-capture-receiver
     depends_on:
       - email-capture-postgres
-
+    environment:
+      CONNECTION_STRING: ${CONNECTION_STRING}
+      TOPIC_NAME: ${TOPIC_NAME}
+      SUBSCRIPTION_NAME: ${SUBSCRIPTION_NAME}
 
   email-capture-postgres:
       image: postgres:11.4-alpine

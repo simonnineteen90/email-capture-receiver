@@ -1,4 +1,3 @@
-require('dotenv').config()
 const { receiveMessage, stopReceive } = require('./receive-message')
 
 process.on('SIGTERM', async () => {
