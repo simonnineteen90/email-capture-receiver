@@ -9,8 +9,8 @@ const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.p
 
 const init = async () => {
   // define all models
-  sequelize.define('Subscriber', subscriber)
-
+  const subscriberModel = sequelize.define('Subscriber', subscriber)
+  db.subscriber = subscriberModel
   // sync data
   sequelize.sync()
 }

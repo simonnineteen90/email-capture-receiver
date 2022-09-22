@@ -4,6 +4,9 @@ services:
     build: .
     image: email-capture-receiver
     container_name: email-capture-receiver
+    ports: 
+     - "3002:3002"
+     - "9230:9229"
     depends_on:
       - email-capture-postgres
     environment:

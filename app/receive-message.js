@@ -4,11 +4,13 @@ const connectionString = process.env.CONNECTION_STRING
 const topicName = process.env.TOPIC_NAME
 const subscriptionName = process.env.SUBSCRIPTION_NAME
 const sbClient = new ServiceBusClient(connectionString)
+const saveNewSubscriber = require('./save-new-subscriber')
 const receiver = sbClient.createReceiver(topicName, subscriptionName)
 
 const receiveMessage = async () => {
   const myMessageHandler = async (messageReceived) => {
     console.log(`New email subscriber: ${messageReceived.body.firstName} ${messageReceived.body.lastName}`)
+    await saveNewSubscriber(messageReceived)
   }
 
   const myErrorHandler = async (error) => {
